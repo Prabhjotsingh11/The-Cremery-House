@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <style>
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #ffa500;
+            color: #1e1e2f;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body style="font-family: Arial, sans-serif; margin: 20px; background-color: #1e1e2f; color: #dcdcdc; position: relative;">
+
+    <button class="logout-btn" id="logout">Logout</button>
+
+    <h1 style="color: #ffa500;">Admin Panel</h1>
+
+    <div style="margin-bottom: 30px; padding: 20px; background-color: #2a2a3d; box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); border-radius: 8px;">
+        <h2 style="margin-top: 0; color: #ffa500;">Add New Ice Cream</h2>
+        <form id="addProductForm">
+            <div style="margin-bottom: 10px;"
+                <label id="prod_title" for="title" style="font-weight: bold; color: #dcdcdc;">Product Title:</label><br>
+                <input type="text" id="title" name="title" style="width: 100%; padding: 10px; border: 1px solid #444; border-radius: 4px; background-color: #3a3a4d; color: #dcdcdc;" >
+            </div>
+            <div style="margin-bottom: 10px;">
+                <label id="prod_desc" for="description" style="font-weight: bold; color: #dcdcdc;">Description:</label><br>
+                <textarea id="description" name="description" style="width: 100%; padding: 10px; border: 1px solid #444; border-radius: 4px; background-color: #3a3a4d; color: #dcdcdc;" rows="4"></textarea>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <label id="prod_price" for="price" style="font-weight: bold; color: #dcdcdc;">Price:</label><br>
+                <input type="number" id="price" name="price" style="width: 100%; padding: 10px; border: 1px solid #444; border-radius: 4px; background-color: #3a3a4d; color: #dcdcdc;">
+            </div>
+            <div style="margin-bottom: 10px;">
+                <label id="prod_stock" for="stock" style="font-weight: bold; color: #dcdcdc;">Stock Quantity:</label><br>
+                <input type="number" id="stock" name="stock" style="width: 100%; padding: 10px; border: 1px solid #444; border-radius: 4px; background-color: #3a3a4d; color: #dcdcdc;">
+            </div>
+            <button id="add_prod" type="button" style="padding: 12px 24px; background-color: #ffa500; color: #1e1e2f; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Add Ice Cream</button>
+        </form>
+    </div>
+
+    <h2 style="color: #00ff37;">Inventory</h2>
+    <table id="productTable" border="1" cellspacing="0" cellpadding="10" style="width: 100%; border-collapse: collapse; background-color: #2a2a3d; box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); border-radius: 8px; overflow: hidden;">
+        <thead style="background-color: #009f22; color: #1e1e2f;">
+            <tr>
+                <th style="padding: 10px;">Title</th>
+                <th style="padding: 10px;">Description</th>
+                <th style="padding: 10px;">Price</th>
+                <th style="padding: 10px;">Stock</th>
+                <th style="padding: 10px;">Actions</th>
+            </tr>
+        </thead>
+        <tbody id="inventoryBody">
+            <!-- <tr>
+                <td style="padding: 10px; color: #fff;">Product 1</td>
+                <td style="padding: 10px; color: #fff;">Description for product 1</td>
+                <td style="padding: 10px; color: #fff;">₹10.00</td>
+                <td style="padding: 10px; color: #fff;">100</td>
+                <td style="padding: 10px;">
+                    <button onclick="editProduct(this)" style="background-color: #1e90ff; color: #fff; border: none; padding: 5px 10px; cursor: pointer; border-radius: 5px;">Edit</button>
+                    <button onclick="deleteProduct(this)" style="background-color: #ff4d4d; color: #fff; border: none; padding: 5px 10px; cursor: pointer; border-radius: 5px;">Delete</button>
+                </td>
+            </tr> -->
+        </tbody>
+    </table>
+
+    <script>
+        const logoutBtn=document.getElementById('logout');
+        logoutBtn.addEventListener('click',()=>{
+        let token=localStorage.removeItem('token');
+        window.location.href = 'Adminlogin.html';
+        })
+        
+        const add_prod_btn = document.getElementById('add_prod');
+        const form=document.getElementById('addProductForm');
+        
+        add_prod_btn.addEventListener('click', () => {
+            const prod_title = document.getElementById('title').value;
+            const prod_desc = document.getElementById('description').value;
+            const prod_price = document.getElementById('price').value;
+            const prod_stock = document.getElementById('stock').value;
+            addProduct(prod_title,prod_desc,prod_price,prod_stock);
+            form.reset();
+
+        });
+
+    async function addProduct(prod_title,prod_desc,prod_price,prod_stock){
+    const url='http://localhost:8080/admin/products';
+    const dataTosend={
+      title:prod_title,
+      description:prod_desc,
+      price:prod_price,
+      stock:prod_stock,
+    };
+    try{
+      const res=await fetch(url,{
+        method:'POST',
+        headers:{
+          'Content-Type': 'application/json',
+        },
+        body:JSON.stringify(dataTosend)
+        
+      });
+      if(res.ok){
+        const data=await res.json();
+        // console.log(data);
+        render();
+      }else{
+        alert('Login Failed')
+      }
+    }catch(err){
+      console.log(err);
+      alert('An error occurred. Please try again.');
+    }
+  }
+
+    async function render(){
+      const url='http://localhost:8080/getInventory';
+      try{
+        const response = await fetch(url, {
+    });
+    
+    const data = await response.json();
+    displayInventory(data);
+    
+    const deleteBtns = document.querySelectorAll(".delete_btn");
+    deleteBtns.forEach((deleteBtn) => {
+      deleteBtn.addEventListener("click", async () => {
+        const id = deleteBtn.getAttribute("data-delete");
+        // console.log(id);
+        const url = `/deleteproduct/${id}`;
+        const token = localStorage.getItem("token");
+        try {
+          await fetch(url, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          });
+          render();
+        } catch (error) {
+          console.log(error);
+        }
+      });
+    });
+
+    const editBtns = document.querySelectorAll(".edit_btn");
+    editBtns.forEach((editBtn) => {
+      editBtn.addEventListener("click", async () => {
+        const id = editBtn.getAttribute(`data-edit`);
+        // console.log(id);
+        // THIS ID IS THE DB ID 
+        const oldstock = document.getElementById(`stock-edit-${id}`);
+
+        const textarea = document.createElement("textarea");
+        textarea.value = oldstock.textContent;
+        oldstock.replaceWith(textarea);
+
+        textarea.addEventListener("blur", async () => {
+          const newstock = textarea.value;
+          console.log(newstock);
+          const urlpost = `/updatestock/${id}`;
+          const token = localStorage.getItem("token");
+          const dataToSend = {
+            stock: newstock,
+          };
+
+          try {
+            await fetch(urlpost, {
+              method: "PATCH",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(dataToSend),
+            });
+            render();
+          } catch (error) {
+            console.log(error);
+          }
+        });
+      });
+    });
+    }catch(error){
+      console.log(error);
+    }
+    }
+
+    function displayInventory(data) {
+            const tbody = document.getElementById('inventoryBody');
+            tbody.innerHTML = ''; // Clear existing table data
+
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+
+                tr.innerHTML = `
+                    <td style="padding: 10px; color: #fff;">${item.title}</td>
+                    <td style="padding: 10px; color: #fff;">${item.description}</td>
+                    <td style="padding: 10px; color: #fff;">₹${item.price}</td>
+                    <td style="padding: 10px; color: #fff;" id='stock-edit-${item._id}'>${item.stock}</td>
+                    <td style="padding: 10px;">
+                        <button data-edit="${item._id}" class="edit_btn" " style="background-color: #1e90ff; color: #fff; border: none; padding: 5px 10px; cursor: pointer; border-radius: 5px;">Edit</button>
+                        <button data-delete="${item._id}" class="delete_btn" style="background-color: #ff4d4d; color: #fff; border: none; padding: 5px 10px; cursor: pointer; border-radius: 5px;">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+
+              });
+        }
+
+        document.addEventListener('DOMContentLoaded', render);
+    </script>
+</body>
+</html>

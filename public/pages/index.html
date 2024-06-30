@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Creamery House</title>
+    <link rel="icon" type="image/png" href="/public/img/ice-cream.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding-top: 250px; /* Adjust based on the height of your fixed elements */
+            background-color: #ffffff;
+        }
+        .logo {
+            display: flex;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            justify-content: center;
+            padding: 1rem;
+            background-color: #ffffff;
+        }
+        .logo img {
+            width: 150px;
+            height: 150px;
+        }
+        .navbar {
+            display: flex;
+            position: fixed;
+            top: 180px; 
+            left: 0;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            background-color: #343a40;
+            padding: 1rem;
+            color: white;
+        }
+        .navbar .nav-center img {
+            width: 50px;
+            height: 50px;
+            margin-left: 1px;
+        }
+        .navbar .nav-center {
+            display: flex;
+            align-items: center;
+        }
+        .navbar .nav-center a {
+            color: white;
+            text-decoration: none;
+            margin: 0 1rem;
+            font-size: 1.2rem;
+        }
+        .products {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: last baseline;
+            flex-direction: row;
+            padding: 2rem;
+        }
+        .product {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin: 1rem;
+            padding: 1rem;
+            width: 200px;
+            text-align: center;
+        }
+        .product h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .product p {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 1rem;
+        }
+        .product .price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .product button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .product button:hover {
+            background-color: #218838;
+        }
+        .navbar button {
+            background-color: #5093ff;
+            color: rgb(255, 255, 255);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-left: 1rem;
+            font-size: 1rem;
+        }
+        .navbar button#logoutbtn {
+            background-color: #ff0000;
+        }
+        .navbar button:hover {
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">
+        <img src="/public/img/logo.jpg" alt="Ice Cream Logo">
+    </div>
+    <div class="navbar">
+        <div class="nav-center">
+            <img src="/public/img/cross-selling.png" id="cartbtn" onclick="window.location.href='cart.html'">
+            <button id="loginbtn" onclick="window.location.href='login.html'">Login</button>
+            <button id="logoutbtn">Logout</button>
+        </div>
+    </div>
+    <div class="products" id="products">
+        <!-- <div class="product">
+            <h2>Vanilla</h2>
+            <p>A classic and creamy vanilla flavor.</p>
+            <div class="price">$5.00</div>
+            <button>Add to Cart</button>
+        </div> -->
+    </div>
+    <script src="/app.js"></script>
+
+</body>
+</html>

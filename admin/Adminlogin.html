@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-container {
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 300px;
+        }
+        .login-container h2 {
+            margin-bottom: 1rem;
+        }
+        .login-container input {
+            width: calc(100% - 2rem);
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .login-container button {
+            width: calc(100% - 2rem);
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .login-container button:hover {
+            background-color: #218838;
+        }
+        .login-container .signup-link {
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            width: calc(100% - 2rem);
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+        .login-container .signup-link:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h2>Admin Login</h2>
+        <form action="/login" method="post" id="loginForm">
+            <input type="text" name="username" id="username" placeholder="Username" required>
+            <input type="password" name="password" id="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+          </form>
+    </div>
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+    const loginForm = document.getElementById("loginForm");
+  
+    loginForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+  
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+  
+      document.getElementById("loginForm").reset();
+      login(username,password);
+    //   console.log("Username:", username);
+    //   console.log("Password:", password);
+    });
+  });
+
+  async function login(username,password){
+    const url='http://localhost:8080/admin/login';
+    const dataTosend={
+      username:username,
+      password:password,
+    };
+    // console.log('Data at frontend',username);
+    try{
+      const res=await fetch(url,{
+        method:'POST',
+        headers:{
+          'Content-Type': 'application/json',
+        },
+        body:JSON.stringify(dataTosend)
+      });
+      if(res.ok){
+        const data=await res.json();
+        // console.log(data);
+        localStorage.setItem('token', data.token);
+        // console.log('all ok')
+        window.location.href='admin.html';
+      }else{
+        alert('Login Failed')
+      }
+    }catch(err){
+      console.log(err);
+      alert('An error occurred. Please try again.');
+    }
+  }
+  
+    </script>
+</body>
+</html>
